@@ -42,22 +42,24 @@ class Backup(models.Model):
                     ipaddress.ip_address(rec.sftp_host)
                 except:
                     raise ValidationError(_('Invalid IP Address for SFTP Host'))
-    '''
-    Make sure that backup_dir exists to help user with
-    troubleshooting
-    '''
-    @api.constrains('backup_dir')
-    def _ensure_valid_dir(self):
-        for rec in self:
-            if not os.path.exists(rec.backup_dir) and not rec.demo_mode:
-                raise ValidationError(_('Invalid Odoo Daily Backup Directory'))
+    # '''
+    # Make sure that backup_dir exists to help user with
+    # troubleshooting
+    # '''
+    # @api.constrains('backup_dir')
+    # def _ensure_valid_dir(self):
+    #     for rec in self:
+    #         if not os.path.exists(rec.backup_dir) and not rec.demo_mode:
+    #             raise ValidationError(_('Invalid Odoo Daily Backup Directory'))
     
     @api.model_create_multi
     def create(self, vals_list):
         new_backups = super(Backup, self).create(vals_list)
         for backup in new_backups:
             if backup.demo_mode:
-                backup.backup_dir = '/home/odoo/backup.daily.test'
+                demo_cwd = '/home/odoo/backup.daily.test'
+                backup._create_demo_data(demo_cwd)
+                backup.backup_dir = demo_cwd
         return new_backups
 
     '''
