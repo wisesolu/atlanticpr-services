@@ -52,6 +52,14 @@ class Backup(models.Model):
             if not os.path.exists(rec.backup_dir) and not rec.demo_mode:
                 raise ValidationError(_('Invalid Odoo Daily Backup Directory'))
     
+    @api.model_create_multi
+    def create(self, vals_list):
+        new_backups = super(Backup, self).create(vals_list)
+        for backup in new_backups:
+            if backup.demo_mode:
+                backup.backup_dir = '/home/odoo/backup.daily.test'
+        return new_backups
+
     '''
     If demo_mode is changed to true, change the the backup_dir to the
     demo directory, and make the directory if it doesn't exist
