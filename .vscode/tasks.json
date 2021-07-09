@@ -1,0 +1,59 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Updates Modules",
+            "type": "shell",
+            "command": "${workspaceFolder}/../../odoo-bin",
+            "args": [
+                "--addons-path=${workspaceFolder},${workspaceFolder}/../../enterprise,${workspaceFolder}/../../addons,${workspaceFolder}/../../odoo/addons",
+                "-u",
+                "${input:list_modules}",
+                "-c",
+                "${workspaceFolder}/odoo.conf",
+                "--stop-after-init"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Switch Version - Community",
+            "type": "shell",
+            "command": "git",
+            "args": ["-C", "${workspaceFolder}/../../", "checkout", "${input:version}", "--force"]
+        },
+        {
+            "label": "Switch Version - Enterprise",
+            "type": "shell",
+            "command": "git",
+            "args": ["-C", "${workspaceFolder}/../../enterprise", "checkout", "${input:version}", "--force"]
+        },
+        {
+            "label": "Switch Version",
+            "dependsOn": ["Switch Version - Community", "Switch Version - Enterprise"],
+            "dependsOrder": "sequence",
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "list_modules",
+            "type": "command",
+            "command": "shellCommand.execute",
+            "args": {
+                "command": "ls -dm */ | sed 's#/##g;s/ //g'"
+            }
+        },
+        {
+            "id": "version",
+            "type": "pickString",
+            "description": "Which version to switch to?",
+            "options": ["14.0", "13.0", "12.0", "11.0"]
+        }
+    ]
+}

@@ -1,0 +1,61 @@
+{
+    "configurations": [
+        {
+            "name": "Python: Current File",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Odoo",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}${pathSeparator}..${pathSeparator}..${pathSeparator}odoo-bin",
+            "console": "externalTerminal",
+            "args": [
+                "--addons-path=${workspaceFolder},${workspaceFolder}/../../enterprise,${workspaceFolder}/../../addons,${workspaceFolder}/../../odoo/addons",
+                // "-u",
+                // "${input:list_modules}",
+                "-c",
+                "${workspaceFolder}/odoo.conf",
+                "--dev",
+                "xml"
+                // "-ibase"
+            ]
+        },
+        {
+            "name": "Odoo - No Custom Modules",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}${pathSeparator}..${pathSeparator}..${pathSeparator}odoo-bin",
+            "console": "externalTerminal",
+            "args": ["--addons-path=${workspaceFolder}/../../enterprise,${workspaceFolder}/../../addons,${workspaceFolder}/../../odoo/addons", "-c", "${workspaceFolder}/odoo.conf"]
+        },
+        {
+            "name": "Odoo Shell",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}${pathSeparator}..${pathSeparator}..${pathSeparator}odoo-bin",
+            "console": "externalTerminal",
+            "args": [
+                "shell",
+                "--addons-path=${workspaceFolder},${workspaceFolder}/../../enterprise,${workspaceFolder}/../../addons,${workspaceFolder}/../../odoo/addons",
+                "-u",
+                "${input:list_modules}",
+                "-c",
+                "${workspaceFolder}/odoo.conf"
+            ]
+        }
+    ],
+    "inputs": [
+        {
+            "id": "list_modules",
+            "type": "command",
+            "command": "shellCommand.execute",
+            "args": {
+                "command": "ls -dm */ | sed 's#/##g;s/ //g'"
+            }
+        }
+    ]
+}

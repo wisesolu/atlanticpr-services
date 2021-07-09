@@ -1,0 +1,20 @@
+{
+    "python.analysis.extraPaths": [
+        "./../..",
+        "./../../.."
+    ],
+    "python.testing.pytestEnabled": false,
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "git.ignoreLimitWarning": true,
+    "python.formatting.provider": "black",
+    "python.testing.unittestArgs": [
+        "-v",
+        "-s",
+        "./sunradon-version_sequence",
+        "-p",
+        "test_*.py"
+    ],
+    "python.testing.promptToConfigure": false,
+    "python.pythonPath": "/home/jot/.venv/v14.0/bin/python"
+}
